@@ -13,8 +13,6 @@ JavaScript
 
 ## Initialize the project
 ```shell
-$ mkdir ./crud
-$ cd ./crud
 $ npm init -y
 $ npm install --save express
 $ npm install --save-dev nodemon

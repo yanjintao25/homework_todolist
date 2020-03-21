@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon ./src/app.js",
-    "debug": "DEBUG=express:* nodemon ./src/app.js",
+    "debug": "set DEBUG=express:* & nodemon ./src/app.js",
     "test": "nodemon --ext js --watch ./ --exec 'mocha ./test' --delay 1"
   },
   "repository": {

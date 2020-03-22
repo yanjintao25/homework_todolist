@@ -1,40 +1,29 @@
 const express = require('express')
-const fs = require('fs')
+const {
+  getAccount,
+  getAllAccounts,
+  createAccount,
+  updateAccount,
+  deleteAccount
+} = require('./controller')
+
 const app = express()
+app.locals.dataFilePath = "./data.json"
+
 const port = 3000
 
-app.get('/accounts', (req, res) => fs.readFile("./data.json", 'utf-8', (err, data)=>{
-    if(err){
-        res.status(500).send()
-    }else {
-        res.send(JSON.parse(data))
-    }
-}))
+app.use(express.json())
+app.get('/', (req, res) => res.send('<h1>Hi, Welcome!</h1>'))
 
-asyncReadFile = function(path) {
-    return new Promise(
-        function(resolve, reject) {
-            fs.readFile(path, 'utf-8', function(err, data){
-                if(err) {
-                    reject(err)
-                }
-                resolve(data)
-            })
-        }).catch(err => {
-            err
-        })
-}
+app.get("/accounts/:id", getAccount)
+app.get("/accounts", getAllAccounts)
 
-const createAccount = (req, res) => {
-    const newAccount = req.body
-    const file = await asyncReadFile('./data.json')
-    const accounts = JSON.parse(file)
-    // if (accounts.filter(v))
-}
+app.post("/accounts", createAccount)
 
-app.post('/accounts', createAccount)
+app.put("/accounts", updateAccount)
 
-app.listen(port, () => console.log(`Our serve has been setup, and listen on the port:
-${port}!`))
+app.delete("/accounts/:id", deleteAccount)
+
+app.listen(port, () => console.log(`Example app listening on port ${port}!`))
 
 exports.app = app

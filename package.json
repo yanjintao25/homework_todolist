@@ -6,7 +6,7 @@
   "scripts": {
     "start": "nodemon ./src/app.js",
     "debug": "set DEBUG=express:* & nodemon ./src/app.js",
-    "test": "nodemon --ext js --watch ./ --exec 'mocha ./test' --delay 1"
+    "test": "nodemon --ext js --watch ./ --exec mocha ./test/app-spec.js --delay 1"
   },
   "repository": {
     "type": "git",

@@ -9,17 +9,13 @@ const {
   
   describe("app", () => {
     describe("get request", () => {
-      it("should get all accounts when request url pattern is '/accounts'", (done) => {
+      it("should get all accounts when request url pattern is '/api/tasks/'", (done) => {
         app.locals.dataFilePath = "./test/fixture.json"
-        request(app).get('/accounts').expect(200).expect([{
-            "name": "Tom",
-            "phoneNumber": 123456,
-            "email": "1@1.com"
-          },
+        request(app).get('/api/tasks/').expect(200).expect([
           {
-            "name": "Jerry",
-            "phoneNumber": 123456,
-            "email": "1@2.com"
+            "id":1,
+            "content":"Restful API homework",
+            "createdTime":"2019-05-15T00:00:00Z"
           }
         ]).end((err, res) => {
           if (err) throw err;
@@ -27,11 +23,11 @@ const {
         })
       })
   
-      it("should get specific account when request url patten is '/accounts/:email'", (done) => {
-        request(app).get('/accounts/1@2.com').expect(200).expect({
-          "name": "Jerry",
-          "phoneNumber": 123456,
-          "email": "1@2.com"
+      it("should get specific account when request url patten is '/api/tasks/:id'", (done) => {
+        request(app).get('/api/tasks/1').expect(200).expect({
+          "id":1,
+          "content":"Restful API homework",
+          "createdTime":"2019-05-15T00:00:00Z"
         }).end((err, res) => {
           if (err) throw err;
           done()
@@ -41,37 +37,29 @@ const {
   
     describe("post request", () => {
       afterEach(async function () {
-        await asyncWriteFile(JSON.stringify([{
-            "name": "Tom",
-            "phoneNumber": 123456,
-            "email": "1@1.com"
-          },
+        await asyncWriteFile(JSON.stringify([
           {
-            "name": "Jerry",
-            "phoneNumber": 123456,
-            "email": "1@2.com"
+            "id":1,
+            "content":"Restful API homework",
+            "createdTime":"2019-05-15T00:00:00Z"
           }
         ]), "./test/fixture.json")
       })
-      it("should create a account when the corresponding email does not exist in the datasource", (done) => {
-        request(app).post('/accounts').send({
-          "name": "Tom",
-          "phoneNumber": 123456,
-          "email": "1@3.com"
-        }).expect(201).expect([{
-            name: 'Tom',
-            phoneNumber: 123456,
-            email: '1@1.com'
+      it("should create a record when the corresponding email does not exist in the datasource", (done) => {
+        request(app).post('/api/tasks').send({
+          "id":2,
+          "content":"Read book",
+          "createdTime":"2019-05-15T00:00:00Z"
+        }).expect(201).expect([
+          {
+            "id":1,
+            "content":"Restful API homework",
+            "createdTime":"2019-05-15T00:00:00Z"
           },
           {
-            name: 'Jerry',
-            phoneNumber: 123456,
-            email: '1@2.com'
-          },
-          {
-            name: 'Tom',
-            phoneNumber: 123456,
-            email: '1@3.com'
+            "id":2,
+            "content":"Read book",
+            "createdTime":"2019-05-15T00:00:00Z"
           }
         ]).end((err, res) => {
           if (err) throw err;
@@ -80,10 +68,10 @@ const {
       })
   
       it("should not create the account when its email has already existed in the datasource", (done) => {
-        request(app).post('/accounts').send({
-          "name": "Tom",
-          "phoneNumber": 123456,
-          "email": "1@1.com"
+        request(app).post('/api/tasks').send({
+          "id":1,
+          "content":"Sleep",
+          "createdTime":"2019-05-15T23:00:00Z"
         }).expect(400).end((err, res) => {
           if (err) throw err;
           done()

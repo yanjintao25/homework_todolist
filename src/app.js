@@ -13,12 +13,14 @@ app.locals.dataFilePath = "./data.json"
 const port = 3000
 
 app.use(express.json())
+// app.get('/', (req, res) => res.send('<h1>Hi, Welcome!</h1>'))
 app.get('/', (req, res) => res.send('<h1>Hi, Welcome!</h1>'))
+// app.get("/accounts/:id", getAccount)
+// app.get("/accounts", getAllAccounts)
+app.get("/api/tasks", getAllAccounts)
+app.get("/api/tasks/{id}", getAccount)
 
-app.get("/accounts/:id", getAccount)
-app.get("/accounts", getAllAccounts)
-
-app.post("/accounts", createAccount)
+app.post("/api/tasks/", createAccount)
 
 app.put("/accounts", updateAccount)
 

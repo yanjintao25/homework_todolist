@@ -6,11 +6,13 @@ const {
 } = require('./dao')
 
 exports.getAccount = async (req, res) => {
-  const id = req.params.id
+  const id = parseInt(req.params.id)
   const file = await asyncReadFile(req.app.locals.dataFilePath)
+  
   const accounts = JSON.parse(file).filter(v => v.id === id)
-  res.send(JSON.parse(file))
-  // accounts.length == 0 ? res.status(404).send() : res.send(accounts[0])
+  
+  // res.send(accounts)
+  accounts.length == 0 ? res.status(404).send() : res.send(accounts[0])
 }
 
 exports.getAllAccounts = (req, res) => fs.readFile(req.app.locals.dataFilePath, "utf-8", (err, data) => {
@@ -33,32 +35,32 @@ exports.createAccount = async (req, res) => {
   }
 }
 
-exports.updateAccount = async (req, res) => {
-  const put = req.body
-  const file = await asyncReadFile(req.app.locals.dataFilePath)
-  const accounts = JSON.parse(file)
-  const candidates = accounts.filter(v => v.email === put.email)
-  if (candidates.length === 0) {
-    this.createAccount(req, res)
-  } else {
-    accounts.forEach((value, index, array) => {
-      if (value.email === put.email) {
-        array[index] = {
-          ...value,
-          ...put
-        }
-      }
-    })
-    await asyncWriteFile(JSON.stringify(accounts), req.app.locals.dataFilePath)
-    res.status(200).send()
-  }
-}
+// exports.updateAccount = async (req, res) => {
+//   const put = req.body
+//   const file = await asyncReadFile(req.app.locals.dataFilePath)
+//   const accounts = JSON.parse(file)
+//   const candidates = accounts.filter(v => v.email === put.email)
+//   if (candidates.length === 0) {
+//     this.createAccount(req, res)
+//   } else {
+//     accounts.forEach((value, index, array) => {
+//       if (value.email === put.email) {
+//         array[index] = {
+//           ...value,
+//           ...put
+//         }
+//       }
+//     })
+//     await asyncWriteFile(JSON.stringify(accounts), req.app.locals.dataFilePath)
+//     res.status(200).send()
+//   }
+// }
 
 exports.deleteAccount = async (req, res) => {
-  const email = req.params.id
+  const id = parseInt(req.params.id)
   const file = await asyncReadFile(req.app.locals.dataFilePath)
   const accounts = JSON.parse(file)
-  const newAccounts = accounts.filter(v => v.email !== email)
+  const newAccounts = accounts.filter(v => v.id !== id)
   if (newAccounts.length === accounts.length) {
     res.status(404).send()
   } else {

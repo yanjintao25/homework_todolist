@@ -22,7 +22,7 @@ $ mkdir ./src
 $ touch ./src/app.js
 ```
 
-## 作业要求
+## 要求
 
 使用node框架，构建一个Restful API，能够完成Todo list的以下功能。
 

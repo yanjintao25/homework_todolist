@@ -20,7 +20,7 @@
   },
   "homepage": "https://github.com/yanjintao25/homework_todolist#readme",
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.18.2"
   },
   "devDependencies": {
     "mocha": "^7.1.1",
